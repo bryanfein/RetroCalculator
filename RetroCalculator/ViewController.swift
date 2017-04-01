@@ -24,10 +24,10 @@ class ViewController: UIViewController {
     }
     
     var currentOperation = Operation.Empty // When the 1st time we open up the Cal we know its empty
-    var runningNumber : String?
-    var leftValStr : String?
-    var rightValStr : String?
-    var result : String?
+    var runningNumber = ""
+    var leftValStr = ""
+    var rightValStr = ""
+    var result = ""
     
     
     
@@ -48,13 +48,15 @@ class ViewController: UIViewController {
             print(err.debugDescription)
         }
         
+        outputLbl.text = String(0)
+        
     }
     
-    
+    // appending the running number to the previous number
     @IBAction func numberPressed(_ sender: UIButton) {
         playsound()
         
-        runningNumber! += "\(sender.tag)" //getting the number tag and assigning it to runningNumber
+        runningNumber += "\(sender.tag)" //getting the number tag and assigning it to runningNumber
         outputLbl.text = runningNumber // assigning runningNumber to the text property to output Label
         
     }
@@ -84,12 +86,14 @@ class ViewController: UIViewController {
         processOperation(operation: .Add)
     }
     
+    @IBAction func onEqualPressed(_ sender: UIButton) {
+        
+        processOperation(operation: currentOperation)
+        
+    }
     
     
-    
-    
-    
-    
+//Button Sound Function
     func playsound () {
         if btnSound.isPlaying {
             //            btnSound.stop()
@@ -99,24 +103,27 @@ class ViewController: UIViewController {
     
     func processOperation(operation: Operation) {
         
+         playsound()
+        
         if currentOperation != Operation.Empty {
             // A user selected an operator, but then selected another operator without first entering a number
-            if runningNumber != nil {
+            if runningNumber != "" {
                 rightValStr = runningNumber
                 runningNumber = ""
                 
                 if currentOperation == Operation.Mutiply {
-                    result = "\(Double (leftValStr!)! * Double(rightValStr!)!)"
+                    result = "\(Double (leftValStr)! * Double(rightValStr)!)"
                 }else if currentOperation == Operation.Divide {
-                    result = "\(Double (leftValStr!)! / Double(rightValStr!)!)"
+                    result = "\(Double (leftValStr)! / Double(rightValStr)!)"
   
                 }else if currentOperation == Operation.Subtract {
-                    result = "\(Double (leftValStr!)! - Double(rightValStr!)!)"
+                    result = "\(Double (leftValStr)! - Double(rightValStr)!)"
 
                 }else if currentOperation == Operation.Add{
-                    result = "\(Double (leftValStr!)! + Double(rightValStr!)!)"
+                    result = "\(Double (leftValStr)! + Double(rightValStr)!)"
 
                 }
+                
                 leftValStr = result
                 outputLbl.text = result
             }
